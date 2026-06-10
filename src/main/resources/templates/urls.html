@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<section layout:fragment="content" class="container mt-5">
+
+    <h2 class="mb-4 fw-bold">All Short URLs</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            <table class="table table-hover table-striped mb-0 align-middle">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Short URL</th>
+                    <th>Original URL</th>
+                    <th>Clicks</th>
+                    <th>Created At</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="url : ${urls}">
+
+                    <!-- ID -->
+                    <td th:text="${url.id}"></td>
+
+                    <!-- Short URL (new) -->
+                    <td>
+                        <a th:href="@{/${url.shortKey}}" target="_blank">
+
+                            <span th:text="${urlService.buildShortUrl(url.shortKey)}"></span>
+
+                        </a>
+                    </td>
+
+                    <!-- Original URL -->
+                    <td style="max-width: 300px; word-break: break-all;"
+                        th:text="${url.originalUrl}">
+                    </td>
+
+
+                    <!-- Click Count (new) -->
+                    <td>
+        <span class="badge bg-success"
+              th:text="${url.clickCount}">
+        </span>
+                    </td>
+
+                    <!-- Created At -->
+                    <td th:text="${url.createdAt}"></td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</section>
+
+</html>
