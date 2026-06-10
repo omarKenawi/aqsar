@@ -1,0 +1,142 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: Inter, Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    text-decoration: none;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2563eb;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main-content {
+    flex: 1;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: calc(100vh - 144px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 2rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-bottom: 2rem;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.url-form {
+    width: 100%;
+    max-width: 700px;
+
+    display: flex;
+    gap: 12px;
+}
+
+.url-form input {
+    flex: 1;
+
+    padding: 16px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+
+    font-size: 1rem;
+}
+
+.url-form input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+
+.url-form button {
+    border: none;
+    border-radius: 10px;
+
+    padding: 16px 24px;
+
+    cursor: pointer;
+
+    background: #2563eb;
+    color: white;
+
+    font-weight: 600;
+}
+
+.url-form button:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    background: white;
+    border-top: 1px solid #e2e8f0;
+
+    padding: 24px 0;
+    text-align: center;
+}
+
+.footer p {
+    color: #64748b;
+    font-size: 0.95rem;
+}

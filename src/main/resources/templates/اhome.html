@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+
+<section layout:fragment="content">
+
+    <div class="hero">
+
+        <h1>Shorten URLs Effortlessly</h1>
+
+        <p>
+            Create short, clean, and shareable links in seconds.
+        </p>
+
+        <form class="url-form"
+              method="post"
+              th:action="@{/shorten}">
+
+            <input
+                    type="url"
+                    name="url"
+                    placeholder="Paste your long URL here..."
+                    required>
+
+            <button type="submit">
+                Shorten URL
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

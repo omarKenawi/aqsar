@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title layout:title-pattern="$CONTENT_TITLE | Aqsar">
+        Aqsar
+    </title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header>
+    <nav class="navbar">
+        <div class="container">
+            <a th:href="@{/}" class="logo">
+                AQSAR
+            </a>
+        </div>
+    </nav>
+</header>
+
+<main class="main-content">
+    <section layout:fragment="content">
+        <!-- Page Content -->
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>
+            © 2026 Aqsar. All rights reserved.
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
