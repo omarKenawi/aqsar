@@ -1,7 +1,9 @@
 package com.example.aqsar.controller;
 
 import com.example.aqsar.dto.UrlRequestDTO;
+import com.example.aqsar.dto.UrlResponseDTO;
 import com.example.aqsar.repository.ShortUrlRepository;
+import com.example.aqsar.service.UrlService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class HomeController {
 
-    final ShortUrlRepository shortUrlRepository;
 
-    @Autowired
-    public HomeController(ShortUrlRepository shortUrlRepository) {
-        this.shortUrlRepository = shortUrlRepository;
+    private final UrlService urlService;
+
+    public HomeController(UrlService urlService) {
+        this.urlService = urlService;
     }
+
 
     @GetMapping("/")
     public String home(Model model) {
@@ -31,16 +34,26 @@ public class HomeController {
 
     @PostMapping("/shorten")
     public String shortenUrl(
-             @ModelAttribute("urlRequestDTO") @Valid UrlRequestDTO urlRequestDTO,
+            @Valid @ModelAttribute("urlRequestDTO") UrlRequestDTO urlRequestDTO,
             BindingResult bindingResult,
-            RedirectAttributes redirectAttributes,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             return "home";
         }
-        redirectAttributes.addFlashAttribute("successmessage","short URl creates successfully");
-        String originalUrl = urlRequestDTO.originalUrl();
+
+        UrlResponseDTO response = urlService.createShortUrl(urlRequestDTO);
+
+        redirectAttributes.addFlashAttribute(
+                "successmessage",
+                "Short URL created successfully"
+        );
+
+        redirectAttributes.addFlashAttribute(
+                "shortUrl",
+                response.shortKey()
+        );
+
         return "redirect:/";
     }
 
