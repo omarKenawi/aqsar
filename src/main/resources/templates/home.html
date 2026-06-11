@@ -20,15 +20,25 @@
             Create short, clean, and shareable links in seconds.
         </p>
 
+        <!-- SUCCESS MESSAGE -->
+        <p class="success"
+           th:if="${successmessage}"
+           th:text="${successmessage}">
+        </p>
+
         <form class="url-form"
               method="post"
-              th:action="@{/shorten}">
+              th:action="@{/shorten}"
+              th:object="${urlRequestDTO}">
 
-            <input
-                    type="url"
-                    name="url"
-                    placeholder="Paste your long URL here..."
-                    required>
+            <input type="text"
+                   th:field="*{originalUrl}"
+                   placeholder="Paste your long URL here...">
+
+            <span class="error"
+                  th:if="${#fields.hasErrors('originalUrl')}"
+                  th:errors="*{originalUrl}">
+        </span>
 
             <button type="submit">
                 Shorten URL
@@ -37,7 +47,6 @@
         </form>
 
     </div>
-
 </section>
 
 </body>
