@@ -105,10 +105,13 @@ body {
     outline: none;
     border-color: #2563eb;
 }
-.error {
+.errorMessage {
     color: #ef4444;
-    font-size: 0.9rem;
-    margin-top: 6px;
+    background: #dcfce7;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+    font-weight: 500;
 }
 .success {
     background: #dcfce7;

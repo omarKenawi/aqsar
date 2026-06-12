@@ -33,33 +33,30 @@ public class HomeController {
 
         return "home";
     }
-
     @PostMapping("/shorten")
     public String shortenUrl(
             @Valid @ModelAttribute("urlRequestDTO") UrlRequestDTO urlRequestDTO,
             BindingResult bindingResult,
-            Model model,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes
+    ) {
 
         if (bindingResult.hasErrors()) {
             return "home";
         }
 
-        try {
-            UrlResponseDTO response = urlService.createShortUrl(urlRequestDTO);
+        UrlResponseDTO response = urlService.createShortUrl(urlRequestDTO);
 
-            redirectAttributes.addFlashAttribute("successmessage",
-                    "Short URL created successfully");
+        redirectAttributes.addFlashAttribute(
+                "successmessage",
+                "Short URL created successfully"
+        );
 
-            redirectAttributes.addFlashAttribute("shortUrl",
-                    response.shortKey());
+        redirectAttributes.addFlashAttribute(
+                "shortUrl",
+                response.shortKey()
+        );
 
-            return "redirect:/";
-
-        } catch (RuntimeException e) {
-            bindingResult.rejectValue("originalUrl", "invalid.url", e.getMessage());
-            return "home";
-        }
+        return "redirect:/";
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.aqsar.service;
 import com.example.aqsar.dto.UrlRequestDTO;
 import com.example.aqsar.dto.UrlResponseDTO;
 import com.example.aqsar.entity.ShortUrl;
+import com.example.aqsar.exception.InvalidUrlException;
 import com.example.aqsar.mapper.UrlMapper;
 import com.example.aqsar.repository.ShortUrlRepository;
 import jakarta.transaction.Transactional;
@@ -48,7 +49,7 @@ public class UrlService {
     @Transactional
     public UrlResponseDTO createShortUrl(UrlRequestDTO urlRequestDTO) {
         if(!isUrlExist(urlRequestDTO)){
-            throw new RuntimeException("Url does not exist");
+            throw new InvalidUrlException("Url does not exist");
         }
         ShortUrl entity = new ShortUrl();
         entity.setOriginalUrl(urlRequestDTO.originalUrl());

@@ -59,10 +59,11 @@
                    th:field="*{originalUrl}"
                    placeholder="Paste your long URL here...">
 
-            <span class="error"
-                  th:if="${#fields.hasErrors('originalUrl')}"
-                  th:errors="*{originalUrl}">
-        </span>
+
+            <div th:if="${errorMessage}" class="errorMessage">
+                <span th:text="${errorMessage}"></span>
+            </div>
+
 
             <button type="submit">
                 Shorten URL
