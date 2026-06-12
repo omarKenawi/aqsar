@@ -21,10 +21,34 @@
         </p>
 
         <!-- SUCCESS MESSAGE -->
-        <p class="success"
-           th:if="${successmessage}"
-           th:text="${successmessage}">
-        </p>
+        <div th:if="${shortUrl}" class="alert alert-success d-flex align-items-center gap-3">
+
+            <span th:text="${successmessage}"></span>
+
+            <a id="shortUrlLink"
+               th:href="${urlService.buildShortUrl(shortUrl)}"
+               th:text="${urlService.buildShortUrl(shortUrl)}"
+               target="_blank">
+            </a>
+
+            <button class="btn btn-sm btn-outline-success"
+                    type="button"
+                    onclick="copyShortUrl()">
+                Copy
+            </button>
+
+        </div>
+
+        <script>
+            function copyShortUrl() {
+                const url = document.getElementById('shortUrlLink').href;
+
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        console.log('Copied');
+                    });
+            }
+        </script>
 
         <form class="url-form"
               method="post"
