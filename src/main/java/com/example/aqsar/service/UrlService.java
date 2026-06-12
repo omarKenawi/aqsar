@@ -134,11 +134,13 @@ public class UrlService {
         }
     }
 
+    @Transactional
     public Optional<UrlResponseDTO> accessShortKey(String shortKey) {
         Optional<ShortUrl> shortUrlOptional = repository.findByShortKey(shortKey);
         if (shortUrlOptional.isEmpty())
             return Optional.empty();
-
+        ShortUrl shortUrl = shortUrlOptional.get();
+        shortUrl.setClickCount(shortUrl.getClickCount()+1);
         return shortUrlOptional.map(urlMapper::toShortUrlDTO);
     }
 }
