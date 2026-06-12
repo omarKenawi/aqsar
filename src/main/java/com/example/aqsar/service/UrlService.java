@@ -18,6 +18,7 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,7 +49,7 @@ public class UrlService {
 
     @Transactional
     public UrlResponseDTO createShortUrl(UrlRequestDTO urlRequestDTO) {
-        if(!isUrlExist(urlRequestDTO)){
+        if (!isUrlExist(urlRequestDTO)) {
             throw new InvalidUrlException("Url does not exist");
         }
         ShortUrl entity = new ShortUrl();
@@ -131,5 +132,13 @@ public class UrlService {
 
             return false;
         }
+    }
+
+    public Optional<UrlResponseDTO> accessShortKey(String shortKey) {
+        Optional<ShortUrl> shortUrlOptional = repository.findByShortKey(shortKey);
+        if (shortUrlOptional.isEmpty())
+            return Optional.empty();
+
+        return shortUrlOptional.map(urlMapper::toShortUrlDTO);
     }
 }
