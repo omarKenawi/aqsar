@@ -30,7 +30,7 @@
 
                     <!-- Short URL (new) -->
                     <td>
-                        <a th:href="@{/${url.shortKey}}" target="_blank">
+                        <a th:href="@{/{key}(key=${url.shortKey})}" target="_self">
 
                             <span th:text="${urlService.buildShortUrl(url.shortKey)}"></span>
 

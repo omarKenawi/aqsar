@@ -2,6 +2,7 @@ package com.example.aqsar.controller;
 
 
 import com.example.aqsar.dto.UrlResponseDTO;
+import com.example.aqsar.exception.ShortUrlNotFoundException;
 import com.example.aqsar.service.UrlService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +30,7 @@ public class UrlController {
     String redirectToOriginalUrl(@PathVariable String shortKey){
         Optional<UrlResponseDTO> shortUrlResponseDTOOptional= urlService.accessShortKey(shortKey);
         if (shortUrlResponseDTOOptional.isEmpty()){
-            throw new RuntimeException("invalid short key: "+shortKey);
+            throw new ShortUrlNotFoundException("invalid short key: "+shortKey);
         }
       UrlResponseDTO urlResponseDTO=  shortUrlResponseDTOOptional.get();
 

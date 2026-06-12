@@ -20,4 +20,17 @@ public class GlobalExceptionHandler {
 
         return "redirect:/";
     }
+    @ExceptionHandler(ShortUrlNotFoundException.class)
+    public String handleShortUrlNotFound(
+            ShortUrlNotFoundException ex,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        redirectAttributes.addFlashAttribute(
+                "errorMessage",
+                "Short URL not found or expired"
+        );
+
+        return "redirect:/";
+    }
 }
