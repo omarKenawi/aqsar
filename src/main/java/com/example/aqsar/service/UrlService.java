@@ -11,13 +11,16 @@ import org.hashids.Hashids;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,8 +42,16 @@ public class UrlService {
         this.hashids = hashids;
     }
 
-    public List<UrlResponseDTO> getAllUrls() {
-        return repository.findAll().stream().map(urlMapper::toShortUrlDTO).toList();
+    public Page<UrlResponseDTO> getAllUrls(int pageNo, int pageSize) {
+        pageNo = Math.max(0, pageNo - 1);
+        Pageable pageable = PageRequest.of(
+                pageNo,
+                pageSize,
+                Sort.by("id")
+        );
+        return repository
+                .findAll(pageable)
+                .map(urlMapper::toShortUrlDTO);
     }
 
     public String buildShortUrl(String shortKey) {
