@@ -139,8 +139,7 @@ public class UrlService {
         Optional<ShortUrl> shortUrlOptional = repository.findByShortKey(shortKey);
         if (shortUrlOptional.isEmpty())
             return Optional.empty();
-        ShortUrl shortUrl = shortUrlOptional.get();
-        shortUrl.setClickCount(shortUrl.getClickCount()+1);
+        repository.incrementClickCount(shortKey);
         return shortUrlOptional.map(urlMapper::toShortUrlDTO);
     }
 }
