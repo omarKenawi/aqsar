@@ -23,7 +23,6 @@ public class UrlController {
     @GetMapping("/urls")
     public String getAllUrls(Model model) {
         model.addAttribute("urls", urlService.getAllUrls());
-        model.addAttribute("urlService", urlService);
         return "urls";
     }
     @GetMapping("/{shortKey}")

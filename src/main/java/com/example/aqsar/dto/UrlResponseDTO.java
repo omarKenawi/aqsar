@@ -6,6 +6,7 @@ public record UrlResponseDTO(
         Long id,
         String originalUrl,
         String shortKey,
+        String fullShortUrl,
         Long clickCount,
         LocalDateTime createdAt
 ) {}

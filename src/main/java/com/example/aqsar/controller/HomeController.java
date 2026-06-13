@@ -29,8 +29,6 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("urlRequestDTO", new UrlRequestDTO(""));
-        model.addAttribute("urlService", urlService);
-
         return "home";
     }
     @PostMapping("/shorten")
@@ -52,8 +50,8 @@ public class HomeController {
         );
 
         redirectAttributes.addFlashAttribute(
-                "shortUrl",
-                response.shortKey()
+                "url",
+                response
         );
 
         return "redirect:/";

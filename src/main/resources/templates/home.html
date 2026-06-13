@@ -21,23 +21,23 @@
         </p>
 
         <!-- SUCCESS MESSAGE -->
-        <div th:if="${shortUrl}" class="alert alert-success d-flex align-items-center gap-3">
+        <div th:if="${url}" class="success">
 
             <span th:text="${successmessage}"></span>
 
             <a id="shortUrlLink"
-               th:href="${urlService.buildShortUrl(shortUrl)}"
-               th:text="${urlService.buildShortUrl(shortUrl)}"
+               th:href="${url.fullShortUrl}"
+               th:text="${url.fullShortUrl}"
                target="_blank">
             </a>
 
-            <button class="btn btn-sm btn-outline-success"
-                    type="button"
+            <button type="button"
                     onclick="copyShortUrl()">
                 Copy
             </button>
 
         </div>
+
 
         <script>
             function copyShortUrl() {
@@ -55,13 +55,18 @@
               th:action="@{/shorten}"
               th:object="${urlRequestDTO}">
 
-            <input type="text"
+            <input type="url"
                    th:field="*{originalUrl}"
                    placeholder="Paste your long URL here...">
 
 
             <div th:if="${errorMessage}" class="errorMessage">
                 <span th:text="${errorMessage}"></span>
+            </div>
+            <div th:if="${#fields.hasErrors('originalUrl')}" class="errorMessage">
+
+                <span th:errors="*{originalUrl}"></span>
+
             </div>
 
 

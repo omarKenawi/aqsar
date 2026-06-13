@@ -65,6 +65,7 @@ public class UrlService {
                 saved.getId(),
                 saved.getOriginalUrl(),
                 shortKey,
+                buildShortUrl(shortKey),
                 saved.getClickCount(),
                 saved.getCreatedAt()
         );
