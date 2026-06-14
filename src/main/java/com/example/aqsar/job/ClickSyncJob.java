@@ -1,6 +1,5 @@
 package com.example.aqsar.job;
 
-import com.example.aqsar.repository.ShortUrlRepository;
 import com.example.aqsar.service.ClickSyncService;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,8 +12,7 @@ public class ClickSyncJob {
     private final RedisTemplate<String, String> redisTemplate;
     private final ClickSyncService clickSyncService;
 
-    public ClickSyncJob(RedisTemplate<String, String> redisTemplate,
-                        ShortUrlRepository repository, ClickSyncService clickSyncService) {
+    public ClickSyncJob(RedisTemplate<String, String> redisTemplate, ClickSyncService clickSyncService) {
         this.redisTemplate = redisTemplate;
         this.clickSyncService = clickSyncService;
     }
