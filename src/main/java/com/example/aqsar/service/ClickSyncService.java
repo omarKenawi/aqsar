@@ -2,7 +2,6 @@ package com.example.aqsar.service;
 
 import com.example.aqsar.repository.ShortUrlRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
