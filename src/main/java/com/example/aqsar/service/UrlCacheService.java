@@ -47,4 +47,14 @@ public class UrlCacheService {
         }
 
     }
+
+    public void incrementClick(String shortKey) {
+        try {
+            redisTemplate.opsForValue()
+                    .increment("click:" + shortKey);
+        } catch (Exception e) {
+            // ignore
+        }
+    }
+
 }
