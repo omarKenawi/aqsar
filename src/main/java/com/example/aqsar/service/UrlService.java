@@ -30,16 +30,18 @@ public class UrlService {
     private final ShortUrlRepository repository;
     private final UrlMapper urlMapper;
     private final Hashids hashids;
-    private static final Logger log = (Logger) LoggerFactory.getLogger(UrlService.class);
+    private final UrlCacheService urlCacheService;
+    private static final Logger log = LoggerFactory.getLogger(UrlService.class);
 
     @Value("${app.base-url}")
     private String baseUrl;
 
 
-    public UrlService(ShortUrlRepository repository, UrlMapper urlMapper, Hashids hashids) {
+    public UrlService(ShortUrlRepository repository, UrlMapper urlMapper, Hashids hashids, UrlCacheService urlCacheService) {
         this.repository = repository;
         this.urlMapper = urlMapper;
         this.hashids = hashids;
+        this.urlCacheService = urlCacheService;
     }
 
     public Page<UrlResponseDTO> getAllUrls(int pageNo, int pageSize) {
@@ -148,10 +150,43 @@ public class UrlService {
 
     @Transactional
     public Optional<UrlResponseDTO> accessShortKey(String shortKey) {
-        Optional<ShortUrl> shortUrlOptional = repository.findByShortKey(shortKey);
-        if (shortUrlOptional.isEmpty())
-            return Optional.empty();
+        long start = System.nanoTime();
+
+
+        String cachedUrl = urlCacheService.get(shortKey);
+
+        ShortUrl entity;
+
+        if (cachedUrl != null) {
+
+            // sliding TTL
+            urlCacheService.refreshTtl(shortKey);
+
+            System.out.println("HIT CACHE");
+
+            entity = new ShortUrl();
+            entity.setShortKey(shortKey);
+            entity.setOriginalUrl(cachedUrl);
+
+        } else {
+
+            System.out.println("HIT DB");
+
+            entity = repository.findByShortKey(shortKey)
+                    .orElse(null);
+
+            if (entity == null) {
+                return Optional.empty();
+            }
+
+            // save in cache
+            urlCacheService.save(shortKey, entity.getOriginalUrl());
+        }
+
+        // increment click
         repository.incrementClickCount(shortKey);
-        return shortUrlOptional.map(urlMapper::toShortUrlDTO);
+        long end = System.nanoTime();
+        System.out.println("Time: " + (end - start)/1_000_000 + " ms");
+        return Optional.of(urlMapper.toShortUrlDTO(entity));
     }
 }
