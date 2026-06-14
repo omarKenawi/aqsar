@@ -19,17 +19,32 @@ public class UrlCacheService {
 
     // get from cache
     public String get(String shortKey) {
-        return redisTemplate.opsForValue().get(PREFIX + shortKey);
+        try {
+            return redisTemplate.opsForValue().get(PREFIX + shortKey);
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     // save with TTL
     public void save(String shortKey, String originalUrl) {
-        redisTemplate.opsForValue()
-                .set(PREFIX + shortKey, originalUrl, TTL);
+        try {
+            redisTemplate.opsForValue()
+                    .set(PREFIX + shortKey, originalUrl, TTL);
+        } catch (Exception e) {
+            //ignore
+        }
+
     }
 
     // refresh TTL (sliding behavior)
     public void refreshTtl(String shortKey) {
-        redisTemplate.expire(PREFIX + shortKey, TTL);
+        try {
+            redisTemplate.expire(PREFIX + shortKey, TTL);
+        } catch (Exception e) {
+            //ignore
+        }
+
     }
 }
