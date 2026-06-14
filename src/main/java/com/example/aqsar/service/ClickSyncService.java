@@ -23,8 +23,5 @@ public class ClickSyncService {
         long clicks = Long.parseLong(valueObj.toString());
 
         repository.incrementClickCountBatch(shortKey, clicks);
-
-        redisTemplate.opsForHash()
-                .delete("url_clicks", shortKey);
     }
 }
