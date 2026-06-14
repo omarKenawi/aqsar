@@ -184,9 +184,12 @@ public class UrlService {
         }
 
         // increment click
-        repository.incrementClickCount(shortKey);
+        urlCacheService.incrementClick(shortKey);
+
         long end = System.nanoTime();
         System.out.println("Time: " + (end - start)/1_000_000 + " ms");
         return Optional.of(urlMapper.toShortUrlDTO(entity));
     }
+
+
 }
