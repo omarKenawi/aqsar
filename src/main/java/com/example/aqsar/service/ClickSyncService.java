@@ -17,17 +17,14 @@ public class ClickSyncService {
         this.redisTemplate = redisTemplate;
     }
     @Transactional
-    public void flushKey(String key) {
+    public void flushKey(Object shortKeyObj, Object valueObj) {
 
-        String shortKey = key.replace("click:", "");
-        String value = redisTemplate.opsForValue().get(key);
+        String shortKey = shortKeyObj.toString();
+        long clicks = Long.parseLong(valueObj.toString());
 
-        if (value != null) {
-            long clicks = Long.parseLong(value);
+        repository.incrementClickCountBatch(shortKey, clicks);
 
-            repository.incrementClickCountBatch(shortKey, clicks);
-
-            redisTemplate.delete(key);
-        }
+        redisTemplate.opsForHash()
+                .delete("url_clicks", shortKey);
     }
 }

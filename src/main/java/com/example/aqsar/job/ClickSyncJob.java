@@ -5,7 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.Map;
 
 @Component
 public class ClickSyncJob {
@@ -20,12 +20,14 @@ public class ClickSyncJob {
     @Scheduled(fixedRate = 30000)
     public void syncClicks() {
 
-        Set<String> keys = redisTemplate.keys("click:*");
+        Map<Object, Object> clicks =
+                redisTemplate.opsForHash()
+                        .entries("url_clicks");
 
-        if (keys == null || keys.isEmpty()) return;
+        if (clicks == null || clicks.isEmpty()) return;
 
-        for (String key : keys) {
-            clickSyncService.flushKey(key);
+        for (Map.Entry<Object, Object> entry : clicks.entrySet()) {
+            clickSyncService.flushKey(entry.getKey(), entry.getValue());
         }
     }
 

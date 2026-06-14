@@ -50,8 +50,8 @@ public class UrlCacheService {
 
     public void incrementClick(String shortKey) {
         try {
-            redisTemplate.opsForValue()
-                    .increment("click:" + shortKey);
+            redisTemplate.opsForHash()
+                    .increment("url_clicks", shortKey, 1);
         } catch (Exception e) {
             // ignore
         }
