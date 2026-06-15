@@ -20,6 +20,10 @@ import static org.mockito.Mockito.*;
 public class UrlCacheServiceTest {
     @Mock
     private RedisTemplate<String, String> redisTemplate;
+    @Mock
+    HashOperations<String, Object, Object> hashOps;
+    @Mock
+    ValueOperations<String, String> valueOps;
 
     @InjectMocks
     UrlCacheService urlCacheService;
@@ -28,8 +32,6 @@ public class UrlCacheServiceTest {
     void givenExistingKey_whenGet_thenReturnValue() {
 
         // Given
-        ValueOperations<String, String> valueOps = mock(ValueOperations.class);
-
         when(redisTemplate.opsForValue())
                 .thenReturn(valueOps);
 
@@ -64,8 +66,6 @@ public class UrlCacheServiceTest {
     void givenUrl_whenSave_thenStoreInRedis() {
 
         // Given
-        ValueOperations<String, String> valueOps = mock(ValueOperations.class);
-
         when(redisTemplate.opsForValue())
                 .thenReturn(valueOps);
 
@@ -100,10 +100,7 @@ public class UrlCacheServiceTest {
     @Test
     @DisplayName("Should increment click counter")
     void givenShortKey_whenIncrementClick_thenIncrementCounter() {
-
         // Given
-        HashOperations<String, Object, Object> hashOps = mock(HashOperations.class);
-
         when(redisTemplate.opsForHash())
                 .thenReturn(hashOps);
 
@@ -123,8 +120,6 @@ public class UrlCacheServiceTest {
     void givenRedisFailure_whenIncrementClick_thenDoNothing() {
 
         // Given
-        HashOperations<String, Object, Object> hashOps = mock(HashOperations.class);
-
         when(redisTemplate.opsForHash())
                 .thenReturn(hashOps);
 
