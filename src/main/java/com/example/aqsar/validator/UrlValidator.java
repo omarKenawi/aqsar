@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URI;
 
@@ -39,17 +38,18 @@ public class UrlValidator {
                 return false;
             }
 
-            HttpURLConnection connection =
-                    (HttpURLConnection) uri.toURL().openConnection();
-
-            connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.setInstanceFollowRedirects(true);
-
-            int statusCode = connection.getResponseCode();
-
-            return statusCode >= 200 && statusCode < 400;
+//            HttpURLConnection connection =
+//                    (HttpURLConnection) uri.toURL().openConnection();
+//
+//            connection.setRequestMethod("HEAD");
+//            connection.setConnectTimeout(5000);
+//            connection.setReadTimeout(5000);
+//            connection.setInstanceFollowRedirects(true);
+//
+//            int statusCode = connection.getResponseCode();
+//            System.out.println("status  "+statusCode);
+//
+            return true;
 
         } catch (Exception e) {
             log.warn("Validation failed for {}", url, e);
