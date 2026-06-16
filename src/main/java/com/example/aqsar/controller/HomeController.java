@@ -2,7 +2,6 @@ package com.example.aqsar.controller;
 
 import com.example.aqsar.dto.UrlRequestDTO;
 import com.example.aqsar.dto.UrlResponseDTO;
-import com.example.aqsar.repository.ShortUrlRepository;
 import com.example.aqsar.service.RateLimitService;
 import com.example.aqsar.service.UrlService;
 import jakarta.servlet.http.HttpServletRequest;
