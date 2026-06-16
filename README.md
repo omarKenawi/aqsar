@@ -21,8 +21,9 @@ Anyone visiting `http://localhost:8081/k3Xp9mQ` is instantly redirected to the o
 
 ## 🏗️ System Design
 
-<img width="1200" height="1200" alt="aqsar_system_design" src="https://github.com/user-attachments/assets/42d7daf6-ec6f-4fce-89c7-4e1475bf67b7" />
 
+
+<img width="1536" height="1024" alt="6c893a83-7f0f-4ff2-822c-60974bfb0dd7" src="https://github.com/user-attachments/assets/6289084c-2681-4612-b72b-b0a0bae884d8" />
 
 ---
 
