@@ -152,6 +152,11 @@
 				<configuration>
 					<excludes>
 						<exclude>**/Main*</exclude>
+						<exclude>**/*Application.class</exclude>
+						<exclude>**/mapper/**</exclude>
+						<exclude>**/exception/**</exclude>
+						<exclude>**/validator/**</exclude>
+
 					</excludes>
 				</configuration>
 			</plugin>
