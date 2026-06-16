@@ -284,9 +284,7 @@ Unit tests cover all core services using **JUnit 5** and **Mockito**, focusing o
 
 ### Test Coverage Report
 
-![JaCoCo Coverage Report](./docs/jacoco.png)
-
-> *Add your JaCoCo screenshot at `docs/jacoco.png`.*
+<img width="1920" height="869" alt="localhost_63342_aqsar_target_site_jacoco_index html__ijt=kog3pmpmft2cnacpoqtdgk1cfn _ij_reload=RELOAD_ON_SAVE - Google Chrome 6_16_2026 6_41_53 AM" src="https://github.com/user-attachments/assets/029bc35b-3918-4a95-8964-535fe807d012" />
 
 ---
 
