@@ -6,6 +6,7 @@ import com.example.aqsar.entity.ShortUrl;
 import com.example.aqsar.exception.InvalidUrlException;
 import com.example.aqsar.mapper.UrlMapper;
 import com.example.aqsar.repository.ShortUrlRepository;
+import com.example.aqsar.validator.UrlValidator;
 import jakarta.transaction.Transactional;
 import org.hashids.Hashids;
 import org.slf4j.Logger;
@@ -31,17 +32,20 @@ public class UrlService {
     private final UrlMapper urlMapper;
     private final Hashids hashids;
     private final UrlCacheService urlCacheService;
+    private final UrlValidator urlValidator;
     private static final Logger log = LoggerFactory.getLogger(UrlService.class);
 
     @Value("${app.base-url}")
     private String baseUrl;
 
 
-    public UrlService(ShortUrlRepository repository, UrlMapper urlMapper, Hashids hashids, UrlCacheService urlCacheService) {
+    public UrlService(ShortUrlRepository repository, UrlMapper urlMapper, Hashids hashids, UrlCacheService urlCacheService,UrlValidator urlValidator) {
         this.repository = repository;
         this.urlMapper = urlMapper;
         this.hashids = hashids;
         this.urlCacheService = urlCacheService;
+        this.urlValidator = urlValidator;
+
     }
 
     public Page<UrlResponseDTO> getAllUrls(int pageNo, int pageSize) {
@@ -62,8 +66,8 @@ public class UrlService {
 
     @Transactional
     public UrlResponseDTO createShortUrl(UrlRequestDTO urlRequestDTO) {
-        if (!isUrlExist(urlRequestDTO)) {
-            throw new InvalidUrlException("Url does not exist");
+        if (!urlValidator.isValid(urlRequestDTO.originalUrl())) {
+            throw new InvalidUrlException("Invalid URL");
         }
         ShortUrl entity = new ShortUrl();
         entity.setOriginalUrl(urlRequestDTO.originalUrl());
@@ -84,69 +88,6 @@ public class UrlService {
         );
     }
 
-    public boolean isUrlExist(UrlRequestDTO urlRequestDTO) {
-
-        String url = urlRequestDTO.originalUrl();
-
-        try {
-
-            URI uri = URI.create(url);
-
-            // Allow only http/https
-            String scheme = uri.getScheme();
-            if (scheme == null ||
-                    (!scheme.equalsIgnoreCase("http")
-                            && !scheme.equalsIgnoreCase("https"))) {
-
-                log.warn("Unsupported scheme: {}", url);
-                return false;
-            }
-
-            String host = uri.getHost();
-
-            if (host == null) {
-                return false;
-            }
-
-            // Block localhost
-            if (host.equalsIgnoreCase("localhost")) {
-                log.warn("Blocked localhost URL: {}", url);
-                return false;
-            }
-
-            // Resolve IP
-            InetAddress address = InetAddress.getByName(host);
-
-            // Block private/internal networks
-            if (address.isAnyLocalAddress()
-                    || address.isLoopbackAddress()
-                    || address.isSiteLocalAddress()) {
-
-                log.warn("Blocked private IP URL: {}", url);
-                return false;
-            }
-
-            HttpURLConnection connection =
-                    (HttpURLConnection) uri.toURL().openConnection();
-
-            connection.setRequestMethod("HEAD");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.setInstanceFollowRedirects(true);
-
-            int statusCode = connection.getResponseCode();
-
-            log.debug("URL {} responded with status {}", url, statusCode);
-
-            return statusCode >= 200 && statusCode < 400;
-
-        } catch (Exception e) {
-
-            log.warn("URL validation failed for {}", url, e);
-
-            return false;
-        }
-    }
 
     @Transactional
     public Optional<UrlResponseDTO> accessShortKey(String shortKey) {

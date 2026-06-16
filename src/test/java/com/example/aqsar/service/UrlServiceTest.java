@@ -6,6 +6,7 @@ import com.example.aqsar.entity.ShortUrl;
 import com.example.aqsar.exception.InvalidUrlException;
 import com.example.aqsar.mapper.UrlMapper;
 import com.example.aqsar.repository.ShortUrlRepository;
+import com.example.aqsar.validator.UrlValidator;
 import org.hashids.Hashids;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -40,6 +41,9 @@ public class UrlServiceTest {
 
     @Mock
     private UrlCacheService urlCacheService;
+
+    @Mock
+    private UrlValidator urlValidator;
 
     @InjectMocks
     private UrlService urlService;
@@ -122,14 +126,14 @@ public class UrlServiceTest {
         // Given
         UrlRequestDTO request = new UrlRequestDTO("http://invalid-url");
 
-        // simulate invalid URL
-        UrlService spyService = Mockito.spy(urlService);
-        doReturn(false).when(spyService).isUrlExist(request);
+        // when
+        when(urlValidator.isValid(request.originalUrl()))
+                .thenReturn(false);
 
         // Then
         Assertions.assertThrows(
                 InvalidUrlException.class,
-                () -> spyService.createShortUrl(request)
+                () -> urlService.createShortUrl(request)
         );
     }
 
@@ -172,10 +176,8 @@ public class UrlServiceTest {
 
         UrlService spyService = Mockito.spy(urlService);
 
-        doReturn(true)
-                .when(spyService)
-                .isUrlExist(request);
-
+        when(urlValidator.isValid(request.originalUrl()))
+                .thenReturn(true);
         ShortUrl savedEntity = new ShortUrl();
         savedEntity.setId(1L);
         savedEntity.setOriginalUrl(request.originalUrl());
