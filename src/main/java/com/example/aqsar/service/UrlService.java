@@ -9,18 +9,12 @@ import com.example.aqsar.repository.ShortUrlRepository;
 import com.example.aqsar.validator.UrlValidator;
 import jakarta.transaction.Transactional;
 import org.hashids.Hashids;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.net.HttpURLConnection;
-import java.net.InetAddress;
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,7 +27,6 @@ public class UrlService {
     private final Hashids hashids;
     private final UrlCacheService urlCacheService;
     private final UrlValidator urlValidator;
-    private static final Logger log = LoggerFactory.getLogger(UrlService.class);
 
     @Value("${app.base-url}")
     private String baseUrl;
