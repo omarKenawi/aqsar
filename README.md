@@ -6,6 +6,7 @@
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3-6DB33F?style=flat-square&logo=springboot)
 ![Redis](https://img.shields.io/badge/Redis-Cache-DC382D?style=flat-square&logo=redis)
 ![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?style=flat-square&logo=mysql)
+![Docker](https://img.shields.io/badge/Docker-Container-2496ED?style=flat-square&logo=docker)
 
 ---
 
@@ -225,6 +226,7 @@ GET /{shortKey}
 | JUnit 5 + Mockito | Unit testing |
 | Lombok | Boilerplate reduction on entities |
 | Maven | Build & dependency management |
+| Docker | Containerization of the application and services |
 
 ---
 
@@ -289,28 +291,16 @@ Unit tests cover all core services using **JUnit 5** and **Mockito**, focusing o
 ---
 
 ## 🚀 Running Locally
-
-**Prerequisites:** Java 21, Maven, MySQL 8, Redis
-
-```bash
+**Prerequisites:** Docker,  Docker Compose
+### 1. Clone the repository
+```
 # 1. Clone
 git clone https://github.com/omarKenawi/aqsar.git
 cd aqsar
-
-# 2. Create the database
-mysql -u root -p -e "CREATE DATABASE aqsar;"
-
-# 3. Configure credentials in src/main/resources/application.properties
-#    spring.datasource.username=...
-#    spring.datasource.password=...
-#    app.base-url=http://localhost:8081
-
-# 4. Run
-./mvnw spring-boot:run
+# 2. Run
+docker compose up --build -d
 ```
-
 Open [http://localhost:8081](http://localhost:8081) — the home page will appear.
-
 ---
 
 ## 📈 Scalability Considerations
