@@ -1,0 +1,55 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: aqsar-mysql
+    command:
+      - --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: aqsar
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      timeout: 5s
+      interval: 5s
+      retries: 20
+      start_period: 180s
+
+  redis:
+    image: redis:7
+    container_name: aqsar-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aqsar-app
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/aqsar
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+
+volumes:
+  mysql_data:
